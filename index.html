@@ -251,17 +251,21 @@
 
                 scene.add(meshs[i]);
             }
-            var dir = new THREE.Vector3(1, 2, 0);
 
+            var dir = new THREE.Vector3(1, 2, 0);
             //normalize the direction vector (convert to vector of length 1)
             dir.normalize();
 
             var origin = new THREE.Vector3(0, 0, 0);
             var length = 2;
             var hex = 0xffff00;
-
             arrowHelper = new THREE.ArrowHelper(dir, origin, length, hex);
+            //
+            
             meshs[0].add(arrowHelper);
+            arrowHelper.setLength(5);
+            arrowHelper.setColor(0xffff00);
+            arrowHelper.setColor(new THREE.Color(0xff0000));//https://github.com/spite/THREE.MeshLine/issues/39
             //scene.add(arrowHelper);
         }
 
