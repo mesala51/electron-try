@@ -61,6 +61,54 @@
         init();
         loop();
 
+        var raycaster = new THREE.Raycaster();
+
+        var mouse = new THREE.Vector2();
+
+        function onMouseDown(event) {
+
+            // calculate mouse position in normalized device coordinates
+            // (-1 to +1) for both components
+
+            mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = - (event.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+
+            // calculate objects intersecting the picking ray
+            var intersects = raycaster.intersectObjects(scene.children);
+
+            for (var i = 0; i < intersects.length; i++) {
+
+                intersects[i].object.material.color.set(0xff0000);
+                arrowHelper.setColor(new THREE.Color(0xff0000));
+
+            }
+
+        }
+
+        function render() {
+
+            // update the picking ray with the camera and mouse position
+            raycaster.setFromCamera(mouse, camera);
+
+            // calculate objects intersecting the picking ray
+            var intersects = raycaster.intersectObjects(scene.children);
+
+            for (var i = 0; i < intersects.length; i++) {
+
+                intersects[i].object.material.color.set(0xff0000);
+
+            }
+
+            renderer.render(scene, camera);
+
+        }
+
+        window.addEventListener('mousedown', onMouseDown, false);
+
+        //window.requestAnimationFrame(render);
+
 
         function init() {
 
@@ -135,7 +183,7 @@
 
             initOimoPhysics();
 
-            
+
 
         }
 
@@ -261,11 +309,11 @@
             var hex = 0xffff00;
             arrowHelper = new THREE.ArrowHelper(dir, origin, length, hex);
             //
-            
+
             meshs[0].add(arrowHelper);
             arrowHelper.setLength(5);
-            arrowHelper.setColor(0xffff00);
-            arrowHelper.setColor(new THREE.Color(0xff0000));//https://github.com/spite/THREE.MeshLine/issues/39
+            //arrowHelper.setColor(0xffff00);
+            arrowHelper.setColor(new THREE.Color(0xffff00));//https://github.com/spite/THREE.MeshLine/issues/39
             //scene.add(arrowHelper);
         }
 
@@ -312,7 +360,7 @@
             world.gravity = new OIMO.Vec3(0, nG, 0);
         }
 
-        
+
 
     </script>
 </body>
