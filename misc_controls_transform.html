@@ -44,9 +44,9 @@
 			<a href="javascript:control.enabled = !control.enabled">"Spacebar" toggle enabled</a><br />
 		</div>
 
-		<script src="../build/three.js"></script>
-		<script src="js/controls/OrbitControls.js"></script>
-		<script src="js/controls/TransformControls.js"></script>
+		<script src="js/three.js"></script>
+		<script src="js/OrbitControls.js"></script>
+		<script src="js/TransformControls.js"></script>
 
 		<script>
 
@@ -90,7 +90,7 @@
 
 				control.addEventListener( 'dragging-changed', function ( event ) {
 
-					orbit.enabled = ! event.value;
+					orbit.enabled = !event.value;
 
 				} );
 

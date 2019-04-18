@@ -16,6 +16,7 @@
     <script src="js/three.js"></script>
     <script src="js/OrbitControls.js"></script>
     <script src="js/oimo.js"></script>
+    <script src="js/TransformControls.js"></script>
 
 </head>
 
@@ -80,29 +81,9 @@
 
             for (var i = 0; i < intersects.length; i++) {
 
-                intersects[i].object.material.color.set(0xff0000);
-                arrowHelper.setColor(new THREE.Color(0xff0000));
-
+                //intersects[i].object.material.color.set(0xff0000);
+                //arrowHelper.setColor(new THREE.Color(0xff0000));
             }
-
-        }
-
-        function render() {
-
-            // update the picking ray with the camera and mouse position
-            raycaster.setFromCamera(mouse, camera);
-
-            // calculate objects intersecting the picking ray
-            var intersects = raycaster.intersectObjects(scene.children);
-
-            for (var i = 0; i < intersects.length; i++) {
-
-                intersects[i].object.material.color.set(0xff0000);
-
-            }
-
-            renderer.render(scene, camera);
-
         }
 
         window.addEventListener('mousedown', onMouseDown, false);
@@ -179,12 +160,22 @@
 
             window.addEventListener('resize', onWindowResize, false);
 
+            control = new THREE.TransformControls(camera, renderer.domElement);
+            control.addEventListener('dragging-changed', function (event) {
+
+                controls.enabled = !event.value;
+                if (controls.enabled) {
+                    mesh = meshs[0];
+                    x = mesh.position.x;
+                    y = mesh.position.y;
+                    z = mesh.position.z;
+                    bodys[0].resetPosition(x, y, z);
+                }
+            });
+            scene.add(control);
+
             // physics
-
             initOimoPhysics();
-
-
-
         }
 
         function loop() {
@@ -199,7 +190,6 @@
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
-
         }
 
         function addStaticBox(size, position, rotation) {
@@ -315,6 +305,9 @@
             //arrowHelper.setColor(0xffff00);
             arrowHelper.setColor(new THREE.Color(0xffff00));//https://github.com/spite/THREE.MeshLine/issues/39
             //scene.add(arrowHelper);
+
+            control.attach(meshs[0]);
+            //scene.add(control);
         }
 
         function updateOimoPhysics() {
